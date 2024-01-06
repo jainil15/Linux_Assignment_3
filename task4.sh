@@ -3,27 +3,42 @@
 createDirs() {  
 	for i in "$@"  
 	do  
-		mkdir -p "$i"  
-		echo "directory $i created"  
+		if [ ! -d "$i"]
+		then
+			mkdir -p "$i"  
+			echo "directory $i created"  
+		else
+			echo "Directory $i already exists"
+		fi
 	done  
-}  
-createFiles() {  
-	for i in "$@"  
-	do  
-		touch "$i"  
-		echo "file $i created"  
-	done  
-}  
-removeDirs() {  
-	for i in "$@"  
-	do  
-		rm -r "$i"  
-		echo "$i removed"  
-	done  
-}  
-readFile() {  
-	cat $1  
-}  
+}
+createFiles() {
+    for i in "$@"; do
+        if [ ! -e "$i" ]; then
+            touch "$i"
+            echo "file $i created"
+        else
+            echo "file $i already exists"
+        fi
+    done
+}
+removeDirs() {
+    for i in "$@"; do
+        if [ -d "$i" ]; then
+            rm -r "$i"
+            echo "$i removed"
+        else
+            echo "$i not found"
+        fi
+    done
+} 
+readFile() {
+    if [ -e "$1" ]; then
+        cat "$1"
+    else
+        echo "File $1 not found"
+    fi
+}
   
 while true  
 do  
@@ -61,4 +76,3 @@ do
 		;;  
 	esac  
 done
-
